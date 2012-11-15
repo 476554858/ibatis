@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+    
+<sqlMap namespace="com.zhaiyz.ibatis">
+
+	<typeAlias alias="User" type="com.zhaiyz.ibatis.User" />
+	
+	<insert id="insert" parameterClass="User">
+		INSERT INTO user
+		<dynamic  prepend="(" close=")">
+			<isNotNull property="id" prepend=",">id</isNotNull>
+		 	 <isNotNull property="name" prepend=",">name</isNotNull>
+		 	 <isNotNull property="sex" prepend=",">sex</isNotNull>
+		 	 <isNotNull property="degree" prepend=",">degree</isNotNull>
+		</dynamic>
+		<dynamic prepend="VALUES(" close=")">
+			<isNotNull property="id" prepend=",">#id#</isNotNull>
+		 	 <isNotNull property="name" prepend=",">#name#</isNotNull>
+		 	 <isNotNull property="sex" prepend=",">#sex#</isNotNull>
+		 	 <isNotNull property="degree" prepend=",">#degree#</isNotNull>
+		</dynamic>
+		<selectKey resultClass="int" keyProperty="id">
+			SELECT @@IDENTITY AS id
+		</selectKey>
+	</insert>
+	<select id="select" parameterClass="User" resultClass="java.util.ArrayList">
+		SELECT * FROM user
+		<dynamic prepend="WHERE">
+			<isGreaterThan prepend="AND" property="id" compareValue="0">
+				id = #id#
+			</isGreaterThan>
+			<isNotNull prepend="AND" property="name">
+				name = #name#
+			</isNotNull>
+			<isGreaterEqual prepend="AND" property="sex" compareValue="0">
+				sex = #sex#
+			</isGreaterEqual>
+			<isGreaterThan prepend="AND" property="degree" compareValue="0.00">
+				degree = #degree#
+			</isGreaterThan>
+		</dynamic>
+	</select>
+	
+	<delete id="delete" parameterClass="User">
+		DELETE FROM user
+		<dynamic prepend="WHERE">
+			<isGreaterThan prepend="AND" property="id" compareValue="0">
+				id = #id#
+			</isGreaterThan>
+			<isNotNull prepend="AND" property="name">
+				name = #name#
+			</isNotNull>
+			<isGreaterEqual prepend="AND" property="sex" compareValue="0">
+				sex = #sex#
+			</isGreaterEqual>
+			<isGreaterThan prepend="AND" property="degree" compareValue="0.00">
+				degree = #degree#
+			</isGreaterThan>
+		</dynamic>
+	</delete>
+	
+	<update id="update" parameterClass="User">
+		UPDATE user SET name = #name#, sex = #sex#, degree = #degree# WHERE id = #id#
+	</update>
+</sqlMap>	
