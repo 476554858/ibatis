@@ -26,7 +26,7 @@
 			SELECT @@IDENTITY AS id
 		</selectKey>
 	</insert>
-	<select id="select" parameterClass="User" resultClass="java.util.ArrayList">
+	<select id="select" parameterClass="User" resultClass="User">
 		SELECT * FROM user
 		<dynamic prepend="WHERE">
 			<isGreaterThan prepend="AND" property="id" compareValue="0">
